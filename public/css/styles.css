@@ -41,6 +41,12 @@ header{
     cursor: pointer;
 }
 
+.button-default-2{
+    border-radius: 10px;
+    background-color: #4e0070;
+    color: white;
+}
+
 .link-default:hover{
     color: #4c79d3;
 
