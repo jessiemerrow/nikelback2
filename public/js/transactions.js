@@ -1,15 +1,14 @@
-const myModal = new bootstrap.Modal ("#transaction-modal");
-let logged = sessionStorage.getItem("logged");
+const myModal = new bootstrap.Modal("#transaction-modal");
 const session = localStorage.getItem("session");
-
+let  logged = sessionStorage.getItem("logged");
 let data = {
     transactions: []
-};
+}
 
-document.getElementById("button-logout").addEventListener("click", logout);
+document.getElementById("button-logout").addEventListener("click", logout)
 
-// Adicionar lanamento
-document.getElementById("transaction-form").addEventListener("submit", function(e){
+// Adicionar lançamento
+document.getElementById("transaction-form").addEventListener("submit", function(e) {
     e.preventDefault();
 
     const value = parseFloat(document.getElementById("value-input").value);
@@ -18,33 +17,34 @@ document.getElementById("transaction-form").addEventListener("submit", function(
     const type = document.querySelector('input[name="type-input"]:checked').value;
 
     data.transactions.unshift({
-        value: value, type: type, description: description, date: date
-    });
+        value: value,
+        type: type,
+        description: description,
+        date: date
+    })
 
     saveData(data);
     e.target.reset();
     myModal.hide();
+    alert("Lançamento adicionado com sucesso.");
 
     getTransactions();
-
-    alert("Lançamento adicionado com sucesso.");
 });
 
 checkLogged();
 
 function checkLogged() {
-    if(session) {
-        sessionStorage.setItem("logged", session); 
+    if (session) {
+        sessionStorage.setItem("logged", session);
         logged = session;
     }
 
-    if(!logged) {
+    if (!logged) {
         window.location.href = "index.html";
-        return;
     }
 
     const dataUser = localStorage.getItem(logged);
-    if(dataUser) {
+    if (dataUser) {
         data = JSON.parse(dataUser);
     }
 
@@ -57,29 +57,28 @@ function logout() {
 
     window.location.href = "index.html";
 }
-    
-function getTransactions () {
-    const transactions = data.transactions;
+
+function getTransactions() {
+    const transaction = data.transactions;
     let transactionsHtml = ``;
 
-    if(transactions.length) {
-        transactions.forEach((item) => {
+    if (transaction.length) {
+        transaction.forEach((item) => {
             let type = "Entrada";
             if(item.type === "2") {
-                type = "Saída";
+                type = "Saida";
             }
-
+            
             transactionsHtml += `
-                <tr>
-                    <th scope="row">${item.date}</th>
-                    <td>${item.value.toFixed(2)}</td>
-                    <td>${type}</td>
-                    <td>${item.description}</td>
-                </tr>
-            `
+            <tr>
+            <th scope="row">${item.date}</th>
+            <td>${item.value}</td>
+            <td>${type}</td>
+            <td>${item.description}</td>
+            </tr>`
         })
     }
-   
+
     document.getElementById("transactions-list").innerHTML = transactionsHtml;
 }
 
